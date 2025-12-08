@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-app-layout title="Problem Statement">
 
     {{-- Notification --}}
     @if(session('success'))

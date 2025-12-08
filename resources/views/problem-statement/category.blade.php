@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-app-layout title="Kategori - Problem Statement">
 
     {{-- Notification --}}
     @if(session('success'))
@@ -39,7 +39,7 @@
                         <label class="block text-sm font-medium">Nomor Urutan</label>
                         <input type="number" name="order_number" value="{{ old('order_number') }}" 
                                class="mt-1 border rounded-lg w-full p-2 @error('order_number') border-red-500 @enderror"
-                               placeholder="Contoh: 1">
+                               placeholder="1">
                         @error('order_number')
                             <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                         @enderror
@@ -49,7 +49,7 @@
                     <div class="mb-4">
                         <label class="block text-sm font-medium">Nama Kategori</label>
                         <input type="text" value="{{ old('name') }}" name="name" class="w-full mt-1 border rounded-lg p-2 @error('name') border-red-500 @enderror"
-                            placeholder="Contoh: Pangan">
+                            placeholder="Pangan">
                         @error('name')
                             <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                         @enderror
