@@ -67,7 +67,7 @@
                     <div class="mb-4">
                         <label class="block text-sm font-medium">Deskripsi</label>
                         <textarea name="description" class="mt-1 border rounded-lg w-full p-2 @error('description') border-red-500 @enderror" rows="4" 
-                                  placeholder="Deskripsi singkat..." required>{{ old('description') }}</textarea>
+                                  placeholder="Deskripsi singkat...">{{ old('description') }}</textarea>
                         @error('description')
                             <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                         @enderror

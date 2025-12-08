@@ -23,14 +23,13 @@ class StatementController extends Controller
         $validated = $request->validate([
             'order_number' => 'required|numeric|min:0.1',
             'title'        => 'required|string|max:255',
-            'description'  => 'required|string',
+            'description'  => 'nullable|string',
         ], [
             'order_number.required' => 'Nomor statement wajib diisi.',
             'order_number.numeric'  => 'Nomor statement harus berupa angka.',
             'order_number.min'      => 'Nomor statement minimal 0.1.',
             'title.required'        => 'Judul wajib diisi.',
             'title.max'             => 'Judul maksimal 255 karakter.',
-            'description.required'  => 'Deskripsi wajib diisi.',
         ]);
 
         // Generate full_number: category.order_number + user input
@@ -48,7 +47,7 @@ class StatementController extends Controller
             'order_number' => $validated['order_number'],
             'full_number'  => $fullNumber,
             'title'        => $validated['title'],
-            'description'  => $validated['description'],
+            'description'  => $validated['description'] ?? null,
         ]);
 
         return redirect()->route('problem-statement.category.statements.index', $category->slug)
@@ -65,14 +64,13 @@ class StatementController extends Controller
         $validated = $request->validate([
             'order_number' => 'required|numeric|min:0.1',
             'title'        => 'required|string|max:255',
-            'description'  => 'required|string',
+            'description'  => 'nullable|string',
         ], [
             'order_number.required' => 'Nomor statement wajib diisi.',
             'order_number.numeric'  => 'Nomor statement harus berupa angka.',
             'order_number.min'      => 'Nomor statement minimal 0.1.',
             'title.required'        => 'Judul wajib diisi.',
             'title.max'             => 'Judul maksimal 255 karakter.',
-            'description.required'  => 'Deskripsi wajib diisi.',
         ]);
 
         // Regenerate full_number with category order_number
@@ -94,7 +92,7 @@ class StatementController extends Controller
             'order_number' => $validated['order_number'],
             'full_number'  => $fullNumber,
             'title'        => $validated['title'],
-            'description'  => $validated['description'],
+            'description'  => $validated['description'] ?? null,
         ]);
 
         return redirect()->route('problem-statement.category.statements.index', $statement->category->slug)
