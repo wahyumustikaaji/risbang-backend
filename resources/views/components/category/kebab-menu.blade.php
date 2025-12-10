@@ -2,7 +2,10 @@
 'category', // instance App\Models\Category
 ])
 
-<div x-data="{ open: false }" class="absolute top-3 right-3 text-gray-700">
+<div x-data="{ open: false }" 
+     @open-modal.window="open = false"
+     @close-modal.window="open = false"
+     class="absolute top-3 right-3 text-gray-700">
 
     {{-- Tombol 3 titik --}}
     <button @click="open = !open" class="p-2 rounded-full hover:bg-gray-100">
@@ -16,7 +19,7 @@
     </button>
 
     {{-- Dropdown --}}
-    <div x-show="open" x-transition @click.away="open = false"
+    <div x-show="open" x-transition
         class="absolute right-0 mt-2 bg-white shadow-lg rounded-lg w-40 text-sm z-50">
 
         {{-- EDIT --}}
@@ -74,7 +77,7 @@
                     </div>
 
                     {{-- Input File (Hidden) --}}
-                    <input type="file" name="image" id="categoryLogoEditInput" class="hidden" accept="image/*" @change="
+                    <input type="file" name="image" id="categoryLogoEditInput{{ $category->id }}" class="hidden" accept="image/*" @change="
                         const file = $event.target.files[0];
                         if(file){
                             preview = URL.createObjectURL(file);
@@ -84,7 +87,7 @@
                     <div class="flex gap-2 mt-2">
 
                         {{-- Upload / Ganti Logo --}}
-                        <button type="button" onclick="document.getElementById('categoryLogoEditInput').click()"
+                        <button type="button" onclick="document.getElementById('categoryLogoEditInput{{ $category->id }}').click()"
                             class="px-3 py-2 bg-blue-100 text-blue-700 rounded hover:bg-blue-200">
                             <span x-show="!preview">Upload Logo</span>
                             <span x-show="preview">Ganti Logo</span>
@@ -93,7 +96,7 @@
                         {{-- Hapus Logo --}}
                         <button type="button" x-show="preview" @click="
                                 preview = null;
-                                document.getElementById('categoryLogoEditInput').value = '';
+                                document.getElementById('categoryLogoEditInput{{ $category->id }}').value = '';
                             " class="px-3 py-2 bg-red-100 text-red-600 rounded hover:bg-red-200">
                             Hapus
                         </button>

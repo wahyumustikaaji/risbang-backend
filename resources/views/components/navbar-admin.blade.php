@@ -14,9 +14,9 @@
                 <img src="{{ asset('assets/images/logo/kementerian.png') }}" class="w-10 h-10 rounded-full border cursor-pointer">
             </x-slot>
 
-            <a class="block px-4 py-2 hover:bg-gray-100" href="/profile">Profile</a>
+            <a class="block px-4 py-2 hover:bg-gray-100" href="{{ route('profile.edit') }}">Profile</a>
 
-            <form method="POST" action="/logout">
+            <form method="POST" action="{{ route('logout') }}">
                 @csrf
                 <button class="w-full text-left px-4 py-2 hover:bg-gray-100">
                     Logout

@@ -11,7 +11,7 @@
     </div>
 
     {{-- Overlay --}}
-    <div x-show="open" x-transition.opacity @click="open = false" class="fixed inset-0 bg-black/40 z-[900]">
+    <div x-show="open" x-transition.opacity @mousedown.self="open = false" class="fixed inset-0 bg-black/40 z-[900]">
     </div>
 
     {{-- Modal Box --}}
