@@ -6,23 +6,25 @@ use App\Http\Controllers\StatementController;
 use App\Http\Controllers\Api\ProblemStatementApiController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
+Route::get('/admin', function () {
     return redirect()->route('login');
 });
 
-Route::middleware(['auth', 'verified'])->prefix('problem-statement')->name('problem-statement.')->group(function () {
-    Route::get('/category', [CategoryController::class, 'index'])->name('category.index');
-    Route::resource('categories', CategoryController::class)->except(['index']);
-    Route::get('/category/{category:slug}', [StatementController::class, 'index'])->name('category.statements.index');
-    Route::resource('categories.statements', StatementController::class)->shallow()->except(['index']);
-});
+Route::prefix('admin')->group(function () {
+    Route::middleware(['auth', 'verified'])->prefix('problem-statement')->name('problem-statement.')->group(function () {
+        Route::get('/category', [CategoryController::class, 'index'])->name('category.index');
+        Route::resource('categories', CategoryController::class)->except(['index']);
+        Route::get('/category/{category:slug}', [StatementController::class, 'index'])->name('category.statements.index');
+        Route::resource('categories.statements', StatementController::class)->shallow()->except(['index']);
+    });
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
+    Route::middleware('auth')->group(function () {
+        Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+        Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+        Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    });
 
-Route::get('/admin/api/problem-statement', [ProblemStatementApiController::class, 'index']);
+    Route::get('/api/problem-statement', [ProblemStatementApiController::class, 'index']);
+});
 
 require __DIR__ . '/auth.php';
