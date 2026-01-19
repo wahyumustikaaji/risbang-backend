@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RecommendationController;
 use App\Http\Controllers\StatementController;
 use App\Http\Controllers\Api\ProblemStatementApiController;
 use Illuminate\Support\Facades\Route;
@@ -16,6 +17,11 @@ Route::prefix('admin')->group(function () {
         Route::resource('categories', CategoryController::class)->except(['index']);
         Route::get('/category/{category:slug}', [StatementController::class, 'index'])->name('category.statements.index');
         Route::resource('categories.statements', StatementController::class)->shallow()->except(['index']);
+    });
+
+    Route::middleware(['auth', 'verified'])->prefix('recommendation')->name('recommendation.')->group(function () {
+        Route::get('/category', [RecommendationController::class, 'index'])->name('category.index');
+        Route::get('/{category:slug}', [RecommendationController::class, 'show'])->name('show');
     });
 
     Route::middleware('auth')->group(function () {

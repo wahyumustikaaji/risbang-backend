@@ -3,6 +3,11 @@ import laravel from 'laravel-vite-plugin';
 
 export default defineConfig({
     base: '/admin/',
+    server: {
+        hmr: {
+            host: 'localhost',
+        },
+    },
     build: {
         outDir: 'public/admin/build',
         manifest: true,
