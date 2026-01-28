@@ -16,7 +16,11 @@ class RecommendationController extends Controller
 
     public function show(Category $category)
     {
-        // Nanti akan diisi dengan logic untuk menampilkan rekomendasi berdasarkan kategori
-        return view('recommendation.show', compact('category'));
+        $statements = $category->statements()
+            ->with('recommendation')
+            ->orderBy('order_number', 'asc')
+            ->get();
+
+        return view('recommendation.show', compact('category', 'statements'));
     }
 }

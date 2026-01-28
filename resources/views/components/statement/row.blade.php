@@ -52,6 +52,22 @@
     <td class="py-3 px-4 text-gray-600">{{ $created ?? '2 hari lalu' }}</td>
     <td class="py-3 px-4 text-gray-600">{{ $updated ?? '1 hari lalu' }}</td>
 
+    {{-- Recommendations Column --}}
+    <td class="py-3 px-4 text-center">
+        @if($statement->recommendation)
+            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                {{ $statement->recommendation->count }} penelitian
+            </span>
+        @else
+            <form action="{{ route('problem-statement.statements.recommendations.generate', $statement) }}" method="POST" class="inline">
+                @csrf
+                <button type="submit" class="px-3 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors">
+                    Generate
+                </button>
+            </form>
+        @endif
+    </td>
+
     <td class="py-3 px-4 flex justify-end gap-2">
         <x-modal-add-edit title="Edit Statement">
 

@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Models\Statement;
+use App\Models\StatementRecommendation;
+use App\Services\RecommendationService;
 use Illuminate\Http\Request;
 
 class StatementController extends Controller
@@ -111,5 +114,53 @@ class StatementController extends Controller
 
         return redirect()->route('problem-statement.category.statements.index', $categorySlug)
             ->with('success', 'Statement berhasil dihapus.');
+    }
+
+    /**
+     * Generate recommendations for a statement
+     */
+    public function generateRecommendations(Statement $statement, RecommendationService $service)
+    {
+        $result = $service->generateRecommendations($statement);
+
+        if ($result['success']) {
+            return redirect()->back()->with('success', $result['message']);
+        }
+
+        return redirect()->back()->with('error', $result['message']);
+    }
+
+    /**
+     * Delete a single recommendation
+     */
+    public function deleteRecommendation(Statement $statement, $index, RecommendationService $service)
+    {
+        $recommendation = $statement->recommendation;
+
+        if (!$recommendation) {
+            return redirect()->back()->with('error', 'Rekomendasi tidak ditemukan.');
+        }
+
+        $result = $service->deleteRecommendation($recommendation, $index);
+
+        if ($result['success']) {
+            return redirect()->back()->with('success', $result['message']);
+        }
+
+        return redirect()->back()->with('error', $result['message']);
+    }
+
+    /**
+     * Reset recommendations (delete and regenerate)
+     */
+    public function resetRecommendations(Statement $statement, RecommendationService $service)
+    {
+        $result = $service->resetRecommendations($statement);
+
+        if ($result['success']) {
+            return redirect()->back()->with('success', $result['message']);
+        }
+
+        return redirect()->back()->with('error', $result['message']);
     }
 }

@@ -17,6 +17,14 @@ Route::prefix('admin')->group(function () {
         Route::resource('categories', CategoryController::class)->except(['index']);
         Route::get('/category/{category:slug}', [StatementController::class, 'index'])->name('category.statements.index');
         Route::resource('categories.statements', StatementController::class)->shallow()->except(['index']);
+        
+        // Recommendation routes for statements
+        Route::post('/statements/{statement}/recommendations/generate', [StatementController::class, 'generateRecommendations'])
+            ->name('statements.recommendations.generate');
+        Route::delete('/statements/{statement}/recommendations/{researchId}', [StatementController::class, 'deleteRecommendation'])
+            ->name('statements.recommendations.delete');
+        Route::post('/statements/{statement}/recommendations/reset', [StatementController::class, 'resetRecommendations'])
+            ->name('statements.recommendations.reset');
     });
 
     Route::middleware(['auth', 'verified'])->prefix('recommendation')->name('recommendation.')->group(function () {

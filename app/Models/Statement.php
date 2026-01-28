@@ -18,4 +18,9 @@ class Statement extends Model
     {
         return $this->belongsTo(Category::class);
     }
+
+    public function recommendation()
+    {
+        return $this->hasOne(StatementRecommendation::class);
+    }
 }

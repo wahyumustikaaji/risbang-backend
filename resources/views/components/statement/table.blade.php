@@ -11,11 +11,12 @@
         <table class="w-full">
             <thead class="bg-gray-100">
                 <tr class="text-left text-gray-700 text-sm">
-                    <th class="py-3 px-4 w-24">Nomor</th>
+                    <th class="py-3 px-4">Nomor</th>
                     <th class="py-3 px-4">Judul</th>
                     <th class="py-3 px-4">Deskripsi</th>
                     <th class="py-3 px-4">Dibuat</th>
                     <th class="py-3 px-4">Diupdate</th>
+                    <th class="py-3 px-4 text-center">Rekomendasi</th>
                     <th class="py-3 px-4 text-center w-36">Actions</th>
                 </tr>
             </thead>
@@ -32,7 +33,7 @@
                         :category="$category" />
                 @empty
                     <tr>
-                        <td colspan="6" class="py-8 text-center text-gray-500">
+                        <td colspan="7" class="py-8 text-center text-gray-500">
                             Belum ada statement. Klik "Tambah Statement" untuk menambahkan.
                         </td>
                     </tr>
