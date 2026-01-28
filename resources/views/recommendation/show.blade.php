@@ -1,4 +1,7 @@
 <x-app-layout title="Rekomendasi - {{ $category->name }}">
+    <style>
+        [x-cloak] { display: none !important; }
+    </style>
 
     {{-- Notification --}}
     @if(session('success'))
@@ -65,15 +68,53 @@
                         
                             @if($statement->recommendation)
                                 {{-- Reset Button --}}
-                                <div class="mb-6">
-                                    <form action="{{ route('problem-statement.statements.recommendations.reset', $statement) }}" 
-                                          method="POST" 
-                                          onsubmit="return confirm('Yakin ingin mereset rekomendasi? Data lama akan dihapus dan rekomendasi baru akan digenerate.')">
-                                        @csrf
-                                        <button type="submit" class="px-4 py-2 inline-flex text-sm leading-5 font-semibold rounded-md bg-blue-500 text-white hover:bg-blue-600 transition-colors">
-                                            Reset Rekomendasi
-                                        </button>
-                                    </form>
+                                <div class="mb-6" x-data="{ showResetModal: false }">
+                                    <button @click="showResetModal = true" 
+                                            type="button" 
+                                            class="px-4 py-2 inline-flex text-sm leading-5 font-semibold rounded-md bg-blue-500 text-white hover:bg-blue-600 transition-colors">
+                                        Reset Rekomendasi
+                                    </button>
+
+                                    {{-- Reset Modal --}}
+                                    <div x-show="showResetModal" 
+                                         x-cloak
+                                         @click.self="showResetModal = false"
+                                         class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 transition-opacity"
+                                         x-transition:enter="transition ease-out duration-300"
+                                         x-transition:enter-start="opacity-0"
+                                         x-transition:enter-end="opacity-100"
+                                         x-transition:leave="transition ease-in duration-200"
+                                         x-transition:leave-start="opacity-100"
+                                         x-transition:leave-end="opacity-0">
+                                        <div class="bg-white rounded-lg shadow-xl max-w-md w-full mx-4"
+                                             x-transition:enter="transition ease-out duration-300"
+                                             x-transition:enter-start="opacity-0 transform scale-95"
+                                             x-transition:enter-end="opacity-100 transform scale-100"
+                                             x-transition:leave="transition ease-in duration-200"
+                                             x-transition:leave-start="opacity-100 transform scale-100"
+                                             x-transition:leave-end="opacity-0 transform scale-95">
+                                            <div class="p-6">
+                                                <h3 class="text-lg font-semibold text-gray-900 mb-4">Konfirmasi Reset</h3>
+                                                <p class="text-gray-600 mb-6">Yakin ingin mereset rekomendasi? Data lama akan dihapus dan rekomendasi baru akan digenerate.</p>
+                                                <div class="flex gap-3 justify-end">
+                                                    <button @click="showResetModal = false" 
+                                                            type="button"
+                                                            class="px-4 py-2 text-sm font-semibold text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 transition-colors">
+                                                        Batal
+                                                    </button>
+                                                    <form action="{{ route('problem-statement.statements.recommendations.reset', $statement) }}" 
+                                                          method="POST" 
+                                                          class="inline">
+                                                        @csrf
+                                                        <button type="submit" 
+                                                                class="px-4 py-2 text-sm font-semibold text-white bg-blue-500 rounded-md hover:bg-blue-600 transition-colors">
+                                                            Ya, Reset
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <div class="overflow-x-auto">
@@ -93,19 +134,57 @@
                                         </thead>
                                         <tbody class="bg-white divide-y divide-gray-200">
                                             @foreach($statement->recommendation->recommendations as $index => $rec)
-                                                <tr>
+                                                <tr x-data="{ showDeleteModal: false }">
                                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $index + 1 }}</td>
                                                     <td class="px-6 py-4 text-sm text-gray-500">{{ $rec['title'] ?? 'N/A' }}</td>
                                                     <td class="px-6 py-4 whitespace-nowrap">
-                                                        <form action="{{ route('problem-statement.statements.recommendations.delete', [$statement, $index]) }}" 
-                                                              method="POST" 
-                                                              onsubmit="return confirm('Yakin ingin menghapus rekomendasi ini?')">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button type="submit" class="py-2 px-4 inline-flex text-xs leading-5 font-semibold rounded-md bg-red-500 text-white hover:bg-red-600 transition-colors">
-                                                                Hapus
-                                                            </button>
-                                                        </form>
+                                                        <button @click="showDeleteModal = true"
+                                                                type="button" 
+                                                                class="py-2 px-4 inline-flex text-xs leading-5 font-semibold rounded-md bg-red-500 text-white hover:bg-red-600 transition-colors">
+                                                            Hapus
+                                                        </button>
+
+                                                        {{-- Delete Modal --}}
+                                                        <div x-show="showDeleteModal" 
+                                                             x-cloak
+                                                             @click.self="showDeleteModal = false"
+                                                             class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 transition-opacity"
+                                                             x-transition:enter="transition ease-out duration-300"
+                                                             x-transition:enter-start="opacity-0"
+                                                             x-transition:enter-end="opacity-100"
+                                                             x-transition:leave="transition ease-in duration-200"
+                                                             x-transition:leave-start="opacity-100"
+                                                             x-transition:leave-end="opacity-0">
+                                                            <div class="bg-white rounded-lg shadow-xl max-w-md w-full mx-4"
+                                                                 x-transition:enter="transition ease-out duration-300"
+                                                                 x-transition:enter-start="opacity-0 transform scale-95"
+                                                                 x-transition:enter-end="opacity-100 transform scale-100"
+                                                                 x-transition:leave="transition ease-in duration-200"
+                                                                 x-transition:leave-start="opacity-100 transform scale-100"
+                                                                 x-transition:leave-end="opacity-0 transform scale-95">
+                                                                <div class="p-6">
+                                                                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Konfirmasi Hapus</h3>
+                                                                    <p class="text-gray-600 mb-2">Yakin ingin menghapus rekomendasi ini?</p>
+                                                                    <div class="flex gap-3 justify-end">
+                                                                        <button @click="showDeleteModal = false" 
+                                                                                type="button"
+                                                                                class="px-4 py-2 text-sm font-semibold text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 transition-colors">
+                                                                            Batal
+                                                                        </button>
+                                                                        <form action="{{ route('problem-statement.statements.recommendations.delete', [$statement, $index]) }}" 
+                                                                              method="POST" 
+                                                                              class="inline">
+                                                                            @csrf
+                                                                            @method('DELETE')
+                                                                            <button type="submit" 
+                                                                                    class="px-4 py-2 text-sm font-semibold text-white bg-red-500 rounded-md hover:bg-red-600 transition-colors">
+                                                                                Ya, Hapus
+                                                                            </button>
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </td>
                                                 </tr>
                                             @endforeach
